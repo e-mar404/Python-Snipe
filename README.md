@@ -10,7 +10,7 @@ The BASE_URL is 'https://betaacademy.snipe-it.io/api/v1/'. (Needs to have '/' at
 
 When you have both the `API_KEY` & `BASE_URL` make a `.env` file and make a variable for each. The program makes the environment variables automatically no need to worry about making them.
 
-# Check in/Check out
+# Check_in/Check_out
 ## status_id codes:
     1: in repair
     2: ready to deploy
@@ -31,7 +31,7 @@ When you have both the `API_KEY` & `BASE_URL` make a `.env` file and make a vari
     |  asset_to_check_in  |    status_id     |
     |    AssetTag/####    |  status_id(1-5)  |
 
-### Note on User search
+### Note on User Search
 When doing the csv to check out to a user the `assigned_user` column needs to be filed out with the username of the user that will be checked out to not the name. (This is because of 2 reasons: IT team is duplicate so name search gives multiple results and in case only first name is inputed in field there might be multiple people with it so a unique username is easier to deal with multiple results from search.)
 
 # Passing CSV File
