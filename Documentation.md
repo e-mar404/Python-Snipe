@@ -1,5 +1,10 @@
-# Check in/Check out
+# Get Started
+In order to use the API, you'll need to generate an API key that will be associated with your user. You can do this through the Snipe-IT web interface, by going to your account dropdown in the top right and clicking on "Manage API Keys". (Source: https://snipe-it.readme.io/reference/generating-api-tokens)
+![Alt text](https://file%2B.vscode-resource.vscode-cdn.net/var/folders/80/8jthxcfd3tvd1bcp0qlbpfv00000gn/T/TemporaryItems/NSIRD_screencaptureui_1l9Db6/Screenshot%202023-05-16%20at%201.33.00%20PM.png?version%3D1684261992777)
 
+If wanting to modify the program here is the API Documentation as well: https://snipe-it.readme.io/reference/api-overview
+
+# Check in/Check out
 ## status_id codes:
     1: in repair
     2: ready to deploy
