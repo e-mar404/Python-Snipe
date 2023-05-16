@@ -1,4 +1,5 @@
 import os
+import sys
 import csv
 import requests
 from dotenv import load_dotenv
@@ -49,14 +50,27 @@ def check_out_to_user(asset_id, user_id):
     response = requests.post(url, json=payload, headers=headers)
     return response.json()
 
-def print_CSV_rows(file_path):
+# add a main read csv function that depending on the action (check_in, check_out, etc) calls
+# another function to get the correct formating of that csv
+def get_values_of_csv(file_path):
     with open(file_path, newline='') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             print(row['first_name'], row['last_name'])
         
+
+# get arguments from command line
 def App():
-    return
+    # total arguments
+    num_argv = len(sys.argv)
+    print("Total arguments passed:", num_argv, end=' ')
+    
+    # Arguments passed
+    print("\nName of Python script:", sys.argv[0], end=' ')
+    print("\nArguments passed:", end = " ")
+    for i in range(1, num_argv):
+        print(sys.argv[i], end=' ')
+    print('')
 
 if (__name__ == '__main__'):
     App()
