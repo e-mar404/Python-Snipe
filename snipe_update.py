@@ -13,64 +13,77 @@ headers = {
         "content-type": "application/json"
     }
 
+# need to implement error handling and let user know what is happening for all functions
+# GET functions
 def get_asset_id(assetTag):
     url = BASE_URL + 'hardware/bytag/' + assetTag
     response = requests.get(url, headers=headers)
     return response.json()['id']
-
 def get_user_id(username):
     url = BASE_URL + 'users?username=' + username
     response = requests.get(url, headers=headers)
     return response.json()['rows'][0]['id']
 
-def check_in(id, status_id):
-    url = BASE_URL + 'hardware/' + str(id) + '/checkin'
-    payload = {
-        'status_id': status_id,
-    }
-    response = requests.post(url, json=payload, headers=headers)
-    return response.json()
-
-def check_out_to_cart(asset_id, cart_id):
-    url = BASE_URL + 'hardware/' + str(asset_id) + '/checkout'
-    payload = {
-        'checkout_to_type': 'asset',
-        'assigned_asset': cart_id,
-    }
-    response = requests.post(url, json=payload, headers=headers)
-    return response.json()
-
-# Needs implementation
-def check_out_to_user(asset_id, user_id):
-    url = BASE_URL + 'users/' + str(asset_id) + '/checkout'
-    payload = {
-        'checkout_to_type': 'asset',
-        'assigned_asset': user_id,
-    }
-    response = requests.post(url, json=payload, headers=headers)
-    return response.json()
-
-# add a main read csv function that depending on the action (check_in, check_out, etc) calls
-# another function to get the correct formating of that csv
-def get_values_of_csv(file_path):
+# POST functions
+def check_in(file_path):
     with open(file_path, newline='') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
-            print(row['first_name'], row['last_name'])
-        
+            asset_id = str(get_asset_id(row['asset_to_check_in']))
+            status_id = int(row['status_id'])
+            url = BASE_URL + 'hardware/' + asset_id + '/checkin'
+            payload = {
+                'status_id': status_id,
+            }
+            response = requests.post(url, json=payload, headers=headers)
+            print(response.json())
 
-# get arguments from command line
+def check_out_to_asset(file_path):
+    with open(file_path, newline='') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            child_asset_id = str(get_asset_id(row['asset_to_check_out']))
+            parent_asset_id = int(get_asset_id(row['check_out_to']))
+
+            url = BASE_URL + 'hardware/' + child_asset_id + '/checkout'
+            payload = {
+                'checkout_to_type': 'asset',
+                'assigned_asset': parent_asset_id,
+            }
+            response = requests.post(url, json=payload, headers=headers)
+            print(response.json())
+
+def check_out_to_user(file_path):
+    with open(file_path, newline='') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            asset_id = str(get_asset_id(row['asset_to_check_out']))
+            user_id = int(get_user_id(row['check_out_to']))
+
+            url = BASE_URL + 'hardware/' + asset_id + '/checkout'
+            payload = {
+                'checkout_to_type': 'user',
+                'assigned_user': user_id,
+            }
+            response = requests.post(url, json=payload, headers=headers)
+            print(response.json())
+            
+
 def App():
-    # total arguments
-    num_argv = len(sys.argv)
-    print("Total arguments passed:", num_argv, end=' ')
-    
-    # Arguments passed
-    print("\nName of Python script:", sys.argv[0], end=' ')
-    print("\nArguments passed:", end = " ")
-    for i in range(1, num_argv):
-        print(sys.argv[i], end=' ')
-    print('')
+    # get arguments from command line
+    file_path = sys.argv[1]
+    action = sys.argv[2]
+
+    # make switch case to corresponding action
+    match action:
+        case 'check_in':
+            check_in(file_path)    
+        case 'check_out_to_user':
+            check_out_to_user(file_path)
+        case 'check_out_to_asset':
+            check_out_to_asset(file_path)
+        case _:
+            print('\'%s\' is not a recignized action' % action)
 
 if (__name__ == '__main__'):
     App()
