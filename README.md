@@ -3,8 +3,8 @@
 os
 sys
 csv
-requests (only that might need download)
-dotenv
+requests (`pip install requests`)
+dotenv (`pip install python-dotenv`)
 
 ### API_KEY
 In order to use the API, you'll need to generate an API key that will be associated with your user. You can do this through the Snipe-IT web interface, by going to your account dropdown in the top right and clicking on "Manage API Keys". (Source: https://snipe-it.readme.io/reference/generating-api-tokens)
