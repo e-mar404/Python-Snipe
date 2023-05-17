@@ -18,7 +18,10 @@ headers = {
 def get_asset_id(assetTag):
     url = BASE_URL + 'hardware/bytag/' + assetTag
     response = requests.get(url, headers=headers)
+    if ('status' in response.json()):
+        return response.json()['status']
     return response.json()['id']
+
 def get_user_id(username):
     url = BASE_URL + 'users?username=' + username
     response = requests.get(url, headers=headers)
@@ -33,15 +36,16 @@ def check_in(file_path):
     with open(file_path, newline='') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
-            asset_id = str(get_asset_id(row['asset_to_check_in']))
-            status_id = int(row['status_id'])
-            url = BASE_URL + 'hardware/' + asset_id + '/checkin'
-            payload = {
-                'status_id': status_id,
-            }
-            response = requests.post(url, json=payload, headers=headers)
-            print(response.json())
-
+            asset_id = get_asset_id(row['asset_to_check_in'])
+            if (asset_id != 'error'):
+                asset_id = str(asset_id)
+                status_id = int(row['status_id'])
+                url = BASE_URL + 'hardware/' + asset_id + '/checkin'
+                payload = {
+                    'status_id': status_id,
+                }
+                response = requests.post(url, json=payload, headers=headers)
+                print(response.json()['messages'])
 def check_out_to_asset(file_path):
     with open(file_path, newline='') as csvfile:
         reader = csv.DictReader(csvfile)
@@ -56,7 +60,6 @@ def check_out_to_asset(file_path):
             }
             response = requests.post(url, json=payload, headers=headers)
             print(response.json())
-
 def check_out_to_user(file_path):
     with open(file_path, newline='') as csvfile:
         reader = csv.DictReader(csvfile)
@@ -71,7 +74,6 @@ def check_out_to_user(file_path):
             }
             response = requests.post(url, json=payload, headers=headers)
             print(response.json())
-            
 def check_out_to_location(file_path):
     with open(file_path, newline='') as csvfile:
         reader = csv.DictReader(csvfile)
@@ -88,7 +90,7 @@ def check_out_to_location(file_path):
             print(response.json())
 
 def App():
-
+    print(get_asset_id('8992'))
     # get arguments from command line only if there are 2 arguments
     if (len(sys.argv) < 3):
         print('not enough arguments')
@@ -97,8 +99,8 @@ def App():
         print('too many arguments')
         return
     
-    file_path = sys.argv[1]
-    action = sys.argv[2]
+    action = sys.argv[1]
+    file_path = sys.argv[2]
 
     # make switch case to corresponding action
     match action:

@@ -1,4 +1,11 @@
 # Get Started
+### Modules Used
+os
+sys
+csv
+requests (only that might need download)
+dotenv
+
 ### API_KEY
 In order to use the API, you'll need to generate an API key that will be associated with your user. You can do this through the Snipe-IT web interface, by going to your account dropdown in the top right and clicking on "Manage API Keys". (Source: https://snipe-it.readme.io/reference/generating-api-tokens)
 ![Alt text](/GET%20API%20KEY.png)
@@ -35,5 +42,5 @@ When you have both the `API_KEY` & `BASE_URL` make a `.env` file and make a vari
 When doing the csv to check out to a user the `assigned_user` column needs to be filed out with the username of the user that will be checked out to not the name. (This is because of 2 reasons: IT team is duplicate so name search gives multiple results and in case only first name is inputed in field there might be multiple people with it so a unique username is easier to deal with multiple results from search.)
 
 # Passing CSV File
-    python snipe_update.py /path/to/file.csv action 
+    python snipe_update.py action /path/to/file.csv
 To pass the file to the program put the file path as an argument when running the program. Like shown above. Action can either be `check_in`, `check_out_to_user` or `check_out_to_asset`.
