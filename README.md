@@ -13,7 +13,7 @@ In order to use the API, you'll need to generate an API key that will be associa
 If wanting to modify the program here is the API Documentation as well: https://snipe-it.readme.io/reference/api-overview
 
 ### BASE_URL
-The BASE_URL is 'https://betaacademy.snipe-it.io/api/v1/'. (Needs to have '/' at the end)
+The BASE_URL is can be found on the right of the active API keys in the same menu of 'Manage API Keys'. Note: The base URL Needs to have '/' at the end and not contain `<endpoint>` on the URL. (The URL snipe gives you ends with <endpoint>)
 
 When you have both the `API_KEY` & `BASE_URL` make a `.env` file and make a variable for each. The program makes the environment variables usable automatically no need to worry about add them to your system.
 
